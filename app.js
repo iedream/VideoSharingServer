@@ -10,7 +10,11 @@ var users = require('./routes/users');
 
 var app = express();
 var mongoose = require('mongoose');
-mongoose.connection(MONGOLAB_URI || 'mongodb://localhost/app');
+
+var url = process.env.MONGOLAB_URI || 'mongodb://localhost/app';
+console.log(url);
+
+mongoose.connection(url);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
