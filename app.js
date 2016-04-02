@@ -14,7 +14,7 @@ var mongoose = require('mongoose');
 var url = process.env.MONGOLAB_URI || 'mongodb://localhost/app';
 console.log(url);
 
-mongoose.connection(url);
+mongoose.connect(url);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
