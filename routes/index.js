@@ -34,6 +34,7 @@ router.post('/post_data', function(req, res, next) {
 
 router.get('/get_data', function(req, res, next) {
     console.log('hello');
+    console.log('req', req);
     return res.send(404, {'message':'missing body'});
     //console.log('got to get data');
     //console.log('body ', req.body);
