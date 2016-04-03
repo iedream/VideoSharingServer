@@ -22,7 +22,8 @@ router.get('/', function(req, res, next) {
   //    }else {
   //      console.log(data);
   //    }
-      res.json('hello');
+    console.log("Got to routs");
+      res.send('hello');
       //res.send('hello world');
   //});
 
