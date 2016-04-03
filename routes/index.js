@@ -25,7 +25,7 @@ router.post('/post_data', function(req, res, next) {
     }
     var plistData = req.body.data;
     var plistName = req.body.name;
-    var dataMessage;
+    var dataMessage = 'upload successful';
 
     async.waterfall([
         function(cb) {
@@ -41,7 +41,6 @@ router.post('/post_data', function(req, res, next) {
                     });
                     return cb(null, data)
                 }
-                dataMessage = 'upload successful';
                 cb(null, foundData);
             })
         },
