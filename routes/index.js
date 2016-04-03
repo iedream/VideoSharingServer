@@ -46,14 +46,19 @@ router.post('/post_data', function(req, res, next) {
 });
 
 router.get('/get_data', function(req, res, next) {
-    var plistName = req.query.name;
+    console.log('got to get data');
+    console.log('body ', req.body);
+    var plistName = req.body.name;
     data.findByTitle(plistName, function(err, foundData) {
         if(err) {
+            console.log('err: ', err.message);
             return res.json({error: err.message});
         }
         if(!foundData) {
+            console.log('nothing found');
             return res.json({error: 'no data found'});
         }
+        console.log('data: ', foundData);
         res.json({success:true, data: foundData});
     })
 });
