@@ -47,7 +47,7 @@ router.post('/post_data', function(req, res, next) {
         function(data, cb) {
             console.log('got here');
             if(!newPlaylist) {
-                data._doc.data = plistData;
+                data.data = plistData;
                 console.log('got here1')
             }
             data.save(function(err) {
