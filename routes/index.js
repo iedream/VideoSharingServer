@@ -45,7 +45,7 @@ router.post('/post_data', function(req, res, next) {
             })
         },
         function(data, cb) {
-            data.data = {'all':'3'};
+            //data.data = {'all':'3'};
             data.save(function(err) {
                 if(err) {
                     return cb({error: err.message});
