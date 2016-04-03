@@ -41,13 +41,13 @@ router.post('/post_data', function(req, res, next) {
                     });
                     return cb(null, data)
                 }
-                cb(null, foundData);
+                cb(null, foundData[0]);
             })
         },
         function(data, cb) {
             console.log('got here');
             if(!newPlaylist) {
-                data[0]._doc.data = plistData;
+                data._doc.data = plistData;
                 console.log('got here1')
             }
             data.save(function(err) {
