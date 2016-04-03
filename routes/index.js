@@ -33,7 +33,7 @@ router.get('/post_data', function(req, res, next) {
                 if(err) {
                     return cb({'error': err.message});
                 }
-                return res.send(500, foundData.data);
+                return res.send(500, foundData);
                 if(foundData.length === 0) {
                     newPlaylist = true;
                     var data = new Data({
