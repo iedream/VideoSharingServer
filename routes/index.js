@@ -33,7 +33,7 @@ router.post('/post_data', function(req, res, next) {
 });
 
 router.get('/get_data', function(req, res, next) {
-    if (req.body) {
+    if (req.body.length !== 0) {
         return res.send(404, {'message':'have body'});
     }else{
         return res.send(404, {'message':'missing body'});
