@@ -25,7 +25,7 @@ router.post('/post_data', function(req, res, next) {
     }
     var plistData = req.body.data;
     var plistName = req.body.name;
-    var dataMessage = 'upload successful';
+    var newPlaylist = false;
 
     async.waterfall([
         function(cb) {
@@ -34,7 +34,7 @@ router.post('/post_data', function(req, res, next) {
                     return cb({'error': err.message});
                 }
                 if(foundData.length === 0) {
-                    dataMessage = 'new playlist upload successfully';
+                    newPlaylist = true;
                     var data = new Data({
                         title: plistName,
                         data: plistData
@@ -50,7 +50,11 @@ router.post('/post_data', function(req, res, next) {
                 if(err) {
                     return cb({error: err.message});
                 }
-                cb(null, {'data': dataMessage})
+                if(newPlaylist) {
+                    cb(null, {'data': 'upload successful'})
+                }else{
+                    cb(null, {'data': 'new playlist upload successful'})
+                }
             })
         }
     ], function(err, success) {
