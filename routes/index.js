@@ -17,8 +17,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/post_data', function(req, res, next) {
-    if(!req.body.data || !req.bod.name) {
-        return res.send(404, {'message':'missing name or data'});
+    if(!req.body.name) {
+        return res.send(404, {'message':'missing name'});
+    }
+    if(!req.body.data) {
+        return res.send(404, {'message':'missing data'});
     }
     var plistData = req.body.data;
     var plistName = req.body.name;
