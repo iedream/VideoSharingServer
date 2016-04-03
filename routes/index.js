@@ -12,22 +12,7 @@ var Data = mongoose.model('Data', dataSchema);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  //var data = new Data({
-  //    title: 'test1',
-  //    data: {all:'2'}
-  //});
-  //data.save(function(err, data) {
-  //    if(err) {
-  //      console.log(err);
-  //    }else {
-  //      console.log(data);
-  //    }
-    console.log("Got to routs");
-      res.send('hello');
-      //res.send('hello world');
-  //});
-
-  //res.render('index', { title: 'Express' });
+    res.send('hello');
 });
 
 router.post('/post_data', function(req, res, next) {
@@ -50,18 +35,21 @@ router.post('/post_data', function(req, res, next) {
 router.get('/get_data', function(req, res, next) {
     console.log('got to get data');
     console.log('body ', req.body);
+    if (!req.body) {
+        return res.send('no body set');
+    }
     var plistName = req.body.name;
     data.findByTitle(plistName, function(err, foundData) {
         if(err) {
             console.log('err: ', err.message);
-            return res.json({error: err.message});
+            return res.send({error: err.message});
         }
         if(!foundData) {
             console.log('nothing found');
-            return res.json({error: 'no data found'});
+            return res.send({error: 'no data found'});
         }
         console.log('data: ', foundData);
-        res.json({success:true, data: foundData});
+        res.send({success:true, data: foundData});
     })
 });
 
