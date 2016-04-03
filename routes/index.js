@@ -29,10 +29,11 @@ router.post('/post_data', function(req, res, next) {
 
     async.waterfall([
         function(cb) {
-            Data.find({title: "test"}, function(err, foundData) {
+            Data.find({title: "test1"}, function(err, foundData) {
                 if(err) {
                     return cb({'error': err.message});
                 }
+                return res.send(500, foundData);
                 if(foundData.length === 0) {
                     newPlaylist = true;
                     var data = new Data({
