@@ -12,7 +12,7 @@ var Data = mongoose.model('Data', dataSchema);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.send('hello');
+    res.send({'message':'hello'});
 });
 
 router.post('/post_data', function(req, res, next) {
