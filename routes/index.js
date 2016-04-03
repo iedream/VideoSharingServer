@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
     res.send({'message':'hello'});
 });
 
-router.post('/post_data', function(req, res, next) {
+router.get('/post_data', function(req, res, next) {
     //if(!req.body.name) {
     //    return res.send(404, {'message':'missing name'});
     //}
