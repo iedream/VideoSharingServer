@@ -25,6 +25,7 @@ router.post('/post_data', function(req, res, next) {
     }
     var plistData = req.body.data;
     var plistName = req.body.name;
+    var dataMessage;
 
     async.waterfall([
         function(cb) {
@@ -33,12 +34,14 @@ router.post('/post_data', function(req, res, next) {
                     return cb({'error': err.message});
                 }
                 if(foundData.length === 0) {
+                    dataMessage = 'new playlist upload successfully';
                     var data = new Data({
                         title: plistName,
                         data: plistData
                     });
                     return cb(null, data)
                 }
+                dataMessage = 'upload successful';
                 cb(null, foundData);
             })
         },
@@ -48,7 +51,7 @@ router.post('/post_data', function(req, res, next) {
                 if(err) {
                     return cb({error: err.message});
                 }
-                cb(null, {'data': 'upload successful'})
+                cb(null, {'data': dataMessage})
             })
         }
     ], function(err, success) {
