@@ -36,6 +36,7 @@ router.get('/get_data', function(req, res, next) {
     console.log('got to get data');
     console.log('body ', req.body);
     if (!req.body) {
+        console.log('missing body');
         return res.send(404, 'no body set');
     }
     var plistName = req.body.name;
