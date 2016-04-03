@@ -12,18 +12,19 @@ var Data = mongoose.model('Data', dataSchema);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var data = new Data({
-      title: 'test1',
-      data: {all:'2'}
-  });
-  data.save(function(err, data) {
-      if(err) {
-        console.log(err);
-      }else {
-        console.log(data);
-      }
-      res.send('hello world');
-  });
+  //var data = new Data({
+  //    title: 'test1',
+  //    data: {all:'2'}
+  //});
+  //data.save(function(err, data) {
+  //    if(err) {
+  //      console.log(err);
+  //    }else {
+  //      console.log(data);
+  //    }
+      res.json('hello');
+      //res.send('hello world');
+  //});
 
   //res.render('index', { title: 'Express' });
 });
