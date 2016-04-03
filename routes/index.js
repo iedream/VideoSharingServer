@@ -33,25 +33,27 @@ router.post('/post_data', function(req, res, next) {
 });
 
 router.get('/get_data', function(req, res, next) {
-    console.log('got to get data');
-    console.log('body ', req.body);
-    if (!req.body) {
-        console.log('missing body');
-        return res.send(404, {'message':'missing body'});
-    }
-    var plistName = req.body.name;
-    data.findByTitle(plistName, function(err, foundData) {
-        if(err) {
-            console.log('err: ', err.message);
-            return res.send(404,{error: err.message});
-        }
-        if(!foundData) {
-            console.log('nothing found');
-            return res.send(404, {error: 'no data found'});
-        }
-        console.log('data: ', foundData);
-        res.send(200, {success:true, data: foundData});
-    })
+    console.log('hello');
+    return res.send(404, {'message':'missing body'});
+    //console.log('got to get data');
+    //console.log('body ', req.body);
+    //if (!req.body) {
+    //    console.log('missing body');
+    //    return res.send(404, {'message':'missing body'});
+    //}
+    //var plistName = req.body.name;
+    //data.findByTitle(plistName, function(err, foundData) {
+    //    if(err) {
+    //        console.log('err: ', err.message);
+    //        return res.send(404,{error: err.message});
+    //    }
+    //    if(!foundData) {
+    //        console.log('nothing found');
+    //        return res.send(404, {error: 'no data found'});
+    //    }
+    //    console.log('data: ', foundData);
+    //    res.send(200, {success:true, data: foundData});
+    //})
 });
 
 
