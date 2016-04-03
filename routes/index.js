@@ -16,24 +16,23 @@ router.get('/', function(req, res, next) {
     res.send({'message':'hello'});
 });
 
-router.get('/post_data', function(req, res, next) {
-    //if(!req.body.name) {
-    //    return res.send(404, {'message':'missing name'});
-    //}
-    //if(!req.body.data) {
-    //    return res.send(404, {'message':'missing data'});
-    //}
-    //var plistData = req.body.data;
-    //var plistName = req.body.name;
+router.post('/post_data', function(req, res, next) {
+    if(!req.body.name) {
+        return res.send(404, {'message':'missing name'});
+    }
+    if(!req.body.data) {
+        return res.send(404, {'message':'missing data'});
+    }
+    var plistData = req.body.data;
+    var plistName = req.body.name;
     var newPlaylist = false;
 
     async.waterfall([
         function(cb) {
-            Data.find({title: "test1"}, function(err, foundData) {
+            Data.find({title: plistName}, function(err, foundData) {
                 if(err) {
                     return cb({'error': err.message});
                 }
-                return res.send(500, foundData);
                 if(foundData.length === 0) {
                     newPlaylist = true;
                     var data = new Data({
@@ -46,7 +45,9 @@ router.get('/post_data', function(req, res, next) {
             })
         },
         function(data, cb) {
-            //data.data = {'all':'3'};
+            if(!newPlaylist) {
+                data[0]._doc.data = plistData;
+            }
             data.save(function(err) {
                 if(err) {
                     return cb({error: err.message});
