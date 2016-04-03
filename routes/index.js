@@ -42,9 +42,10 @@ router.get('/get_data', function(req, res, next) {
             console.log('err: ', err.message);
             return res.send(404,{'error': err.message});
         }
-        if(!foundData) {
+        if(!foundData.title) {
             console.log('nothing found');
-            return res.send(404, {'error': 'no data found'});
+            var message = 'no data found for: ', plistName;
+            return res.send(404, {'error': message});
         }
         console.log('data: ', foundData);
         res.send(200, {success:true, data: foundData});
