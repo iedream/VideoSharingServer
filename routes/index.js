@@ -36,7 +36,7 @@ router.get('/get_data', function(req, res, next) {
     if (!req.query.name) {
         return res.send(404, {'message':'missing body'});
     }
-    var plistName = req.body.name;
+    var plistName = req.query.name;
     Data.find({title: plistName}, function(err, foundData) {
         if(err) {
             console.log('err: ', err.message);
