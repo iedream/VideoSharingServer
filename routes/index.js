@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var async = require('async');
 
 var mongoose = require('mongoose');
 
@@ -16,39 +17,59 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/post_data', function(req, res, next) {
-    console.log("get");
+    if(!req.body.data || !req.bod.name) {
+        return res.send(404, {'message':'missing name or data'});
+    }
     var plistData = req.body.data;
     var plistName = req.body.name;
-    var data = new Data({
-        title: plistName,
-        data: plistData
-    });
-    data.save(function(err, data) {
-        if(err) {
-            return res.json({error: err.message});
-        }
-        res.json({success: true})
-    })
 
+    async.waterfall([
+        function(cb) {
+            Data.find({title: plistName}, function(err, foundData) {
+                if(err) {
+                    return cb({'error': err.message});
+                }
+                if(foundData.length === 0) {
+                    var data = new Data({
+                        title: plistName,
+                        data: plistData
+                    });
+                    return cb(null, data)
+                }
+                cb(null, foundData);
+            })
+        },
+        function(data, cb) {
+            data.data = plistData;
+            data.save(function(err) {
+                if(err) {
+                    return cb({error: err.message});
+                }
+                cb(null, {'data': 'upload successful'})
+            })
+        }
+    ], function(err, success) {
+        if (err) {
+            return res.send(500, err);
+        }
+        res.send(200, success);
+    });
 });
 
 router.get('/get_data', function(req, res, next) {
     if (!req.query.name) {
-        return res.send(404, {'message':'missing body'});
+        return res.send(404, {'message':'missing name'});
     }
     var plistName = req.query.name;
     Data.find({title: plistName}, function(err, foundData) {
         if(err) {
-            console.log('err: ', err.message);
-            return res.send(404,{'error': err.message});
+            return res.send(500,{'error': err.message});
         }
         if(foundData.length === 0) {
-            console.log('nothing found');
             var message = 'no data found for: ' + plistName;
             return res.send(404, {'error': message});
         }
-        console.log('data: ', foundData);
-        res.send(200, {success:true, data: foundData});
+        res.send(200, {'data': foundData});
     })
 });
 
