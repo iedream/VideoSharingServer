@@ -33,7 +33,8 @@ router.post('/post_data', function(req, res, next) {
 });
 
 router.get('/get_data', function(req, res, next) {
-    if (req.body.name) {
+    console.log('query', req.query);
+    if (req.query.name) {
         return res.send(404, {'message':'have body'});
     }else{
         return res.send(404, {'message':'missing body'});
