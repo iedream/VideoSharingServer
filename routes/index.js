@@ -34,7 +34,7 @@ router.post('/post_data', function(req, res, next) {
 
 router.get('/get_data', function(req, res, next) {
     if (req.body.length !== 0) {
-        return res.send(404, {'message':'have body'});
+        return res.send(404, {'message':'have body' + req.body.length});
     }else{
         return res.send(404, {'message':'missing body'});
     }
