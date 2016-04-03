@@ -33,25 +33,22 @@ router.post('/post_data', function(req, res, next) {
 });
 
 router.get('/get_data', function(req, res, next) {
-    console.log('query', req.query);
-    if (req.query.name) {
-        return res.send(404, {'message':'have body'});
-    }else{
+    if (!req.query.name) {
         return res.send(404, {'message':'missing body'});
     }
-    //var plistName = req.body.name;
-    //data.findByTitle(plistName, function(err, foundData) {
-    //    if(err) {
-    //        console.log('err: ', err.message);
-    //        return res.send(404,{error: err.message});
-    //    }
-    //    if(!foundData) {
-    //        console.log('nothing found');
-    //        return res.send(404, {error: 'no data found'});
-    //    }
-    //    console.log('data: ', foundData);
-    //    res.send(200, {success:true, data: foundData});
-    //})
+    var plistName = req.body.name;
+    data.findByTitle(plistName, function(err, foundData) {
+        if(err) {
+            console.log('err: ', err.message);
+            return res.send(404,{'error': err.message});
+        }
+        if(!foundData) {
+            console.log('nothing found');
+            return res.send(404, {'error': 'no data found'});
+        }
+        console.log('data: ', foundData);
+        res.send(200, {success:true, data: foundData});
+    })
 });
 
 
