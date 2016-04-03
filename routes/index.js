@@ -17,19 +17,19 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/post_data', function(req, res, next) {
-    if(!req.body.name) {
-        return res.send(404, {'message':'missing name'});
-    }
-    if(!req.body.data) {
-        return res.send(404, {'message':'missing data'});
-    }
-    var plistData = req.body.data;
-    var plistName = req.body.name;
+    //if(!req.body.name) {
+    //    return res.send(404, {'message':'missing name'});
+    //}
+    //if(!req.body.data) {
+    //    return res.send(404, {'message':'missing data'});
+    //}
+    //var plistData = req.body.data;
+    //var plistName = req.body.name;
     var newPlaylist = false;
 
     async.waterfall([
         function(cb) {
-            Data.find({title: plistName}, function(err, foundData) {
+            Data.find({title: "test1"}, function(err, foundData) {
                 if(err) {
                     return cb({'error': err.message});
                 }
@@ -45,12 +45,12 @@ router.post('/post_data', function(req, res, next) {
             })
         },
         function(data, cb) {
-            data.data = plistData;
+            data.data = {'all':'3'};
             data.save(function(err) {
                 if(err) {
                     return cb({error: err.message});
                 }
-                if(newPlaylist) {
+                if(!newPlaylist) {
                     cb(null, {'data': 'upload successful'})
                 }else{
                     cb(null, {'data': 'new playlist upload successful'})
