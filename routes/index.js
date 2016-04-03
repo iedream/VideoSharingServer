@@ -44,7 +44,7 @@ router.get('/get_data', function(req, res, next) {
         }
         if(!foundData.title) {
             console.log('nothing found');
-            var message = 'no data found for: ', plistName;
+            var message = 'no data found for: ' + plistName;
             return res.send(404, {'error': message});
         }
         console.log('data: ', foundData);
