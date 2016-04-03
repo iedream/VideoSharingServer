@@ -45,14 +45,18 @@ router.post('/post_data', function(req, res, next) {
             })
         },
         function(data, cb) {
+            console.log('got here');
             if(!newPlaylist) {
                 data[0]._doc.data = plistData;
+                console.log('got here1')
             }
             data.save(function(err) {
                 if(err) {
+                    console.log('got here2')
                     return cb({error: err.message});
                 }
                 if(!newPlaylist) {
+                    console.log('got here3')
                     cb(null, {'data': 'upload successful'})
                 }else{
                     cb(null, {'data': 'new playlist upload successful'})
@@ -60,6 +64,7 @@ router.post('/post_data', function(req, res, next) {
             })
         }
     ], function(err, success) {
+        console.log('err: ',err,' success: ', success);
         if (err) {
             return res.send(500, err);
         }
