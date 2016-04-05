@@ -231,7 +231,7 @@ router.get('/group/get/data', function(req, res, next) {
                 }
                 if(foundData.length === 0) {
                     var message = 'no data found for: ' + plistName +' in ' + groupId;
-                    return cb({message: err.message, code: 401});
+                    return cb({message: message, code: 401});
                 }
                 cb(null, {'data': foundData});
             })
