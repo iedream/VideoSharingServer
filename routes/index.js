@@ -67,23 +67,23 @@ router.post('/create/group', function(req, res, next) {
     })
 });
 
-router.get('/group/post/data', function(req, res, next) {
-    if(!req.query.name) {
+router.post('/group/post/data', function(req, res, next) {
+    if(!req.body.name) {
         return res.send(404, {'error':'missing name'});
     }
-    if(!req.query.data) {
+    if(!req.body.data) {
         return res.send(404, {'error':'missing data'});
     }
-    if(!req.query.groupId) {
+    if(!req.body.groupId) {
         return res.send(404, {'error':'missing group id'});
     }
-    if(!req.query.password) {
+    if(!req.body.password) {
         return res.send(404, {'error':'missing password'});
     }
-    var groupId = req.query.groupId;
-    var password = req.query.password;
-    var plistName = req.query.name;
-    var plistData = req.query.data;
+    var groupId = req.body.groupId;
+    var password = req.body.password;
+    var plistName = req.body.name;
+    var plistData = req.body.data;
     var newPlaylist = false;
 
     async.waterfall([
