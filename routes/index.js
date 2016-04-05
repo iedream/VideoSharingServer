@@ -25,15 +25,15 @@ router.get('/', function(req, res, next) {
     res.send({'message':'hello'});
 });
 
-router.get('/create/group', function(req, res, next) {
-    if (!req.query.groupId) {
+router.post('/create/group', function(req, res, next) {
+    if (!req.body.groupId) {
         return res.send(404, {'error': 'missing group id'});
     }
-    if (!req.query.password) {
+    if (!req.body.password) {
         return res.send(404, {'error': 'missing password'});
     }
-    var groupId = req.query.groupId;
-    var password = bcrypt.hashSync(req.query.password, salt);
+    var groupId = req.body.groupId;
+    var password = bcrypt.hashSync(req.body.password, salt);
 
     async.waterfall([
         function(cb) {
@@ -68,22 +68,22 @@ router.get('/create/group', function(req, res, next) {
 });
 
 router.post('/group/post/data', function(req, res, next) {
-    if(!req.body.name) {
+    if(!req.query.name) {
         return res.send(404, {'error':'missing name'});
     }
-    if(!req.body.data) {
+    if(!req.query.data) {
         return res.send(404, {'error':'missing data'});
     }
-    if(!req.body.groupId) {
+    if(!req.query.groupId) {
         return res.send(404, {'error':'missing group id'});
     }
-    if(!req.body.password) {
+    if(!req.query.password) {
         return res.send(404, {'error':'missing password'});
     }
-    var groupId = req.body.groupId;
-    var password = req.body.password;
-    var plistName = req.body.name;
-    var plistData = req.body.data;
+    var groupId = req.query.groupId;
+    var password = req.query.password;
+    var plistName = req.query.name;
+    var plistData = req.query.data;
     var newPlaylist = false;
 
     async.waterfall([
