@@ -92,6 +92,9 @@ router.post('/group/post/data', function(req, res, next) {
                 if(err) {
                     return cb({message: err.message, code: 500});
                 }
+                if(group.length === 0) {
+                    return cb({message: 'group doesn\'t exist', code:404});
+                }
                 if(!bcrypt.compareSync(password, group[0].password)) {
                     return cb({message: 'Wrong Password', code: 401});
                 }
@@ -211,6 +214,9 @@ router.get('/group/get/data', function(req, res, next) {
             Group.find({groupId:groupId}, function(err, group) {
                 if(err) {
                     return cb({message: err.message, code: 500});
+                }
+                if(group.length === 0) {
+                    return cb({message: 'group doesn\'t exist', code:404});
                 }
                 if(!bcrypt.compareSync(password, group[0].password)) {
                     return cb({message: 'Wrong Password', code: 401});
