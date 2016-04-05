@@ -26,14 +26,14 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/create/group', function(req, res, next) {
-    if (!req.body.groupId) {
+    if (!req.query.groupId) {
         return res.send(404, {'error': 'missing group id'});
     }
-    if (!req.body.password) {
+    if (!req.query.password) {
         return res.send(404, {'error': 'missing password'});
     }
-    var groupId = req.body.groupId;
-    var password = bcrypt.hashSync(req.body.password, salt);
+    var groupId = req.query.groupId;
+    var password = bcrypt.hashSync(req.query.password, salt);
 
     async.waterfall([
         function(cb) {
