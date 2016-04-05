@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
     res.send({'message':'hello'});
 });
 
-router.post('/create/group', function(req, res, next) {
+router.get('/create/group', function(req, res, next) {
     if (req.body.groupId) {
         return res.send(404, {'error': 'missing group id'});
     }
