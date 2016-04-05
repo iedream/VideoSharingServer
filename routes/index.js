@@ -67,7 +67,7 @@ router.post('/create/group', function(req, res, next) {
     })
 });
 
-router.post('/group/post/data', function(req, res, next) {
+router.get('/group/post/data', function(req, res, next) {
     if(!req.query.name) {
         return res.send(404, {'error':'missing name'});
     }
