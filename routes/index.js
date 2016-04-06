@@ -233,7 +233,7 @@ router.get('/group/get/data', function(req, res, next) {
                     var message = 'no data found for: ' + plistName +' in ' + groupId;
                     return cb({message: message, code: 401});
                 }
-                cb(null, {'data': foundData});
+                cb(null, foundData[0]);
             })
         }
     ], function(err, data) {
@@ -257,7 +257,7 @@ router.get('/get/data', function(req, res, next) {
             var message = 'no data found for: ' + plistName;
             return res.send(404, {'error': message});
         }
-        res.send(200, {'data': foundData});
+        res.send(200, foundData[0]);
     })
 });
 
