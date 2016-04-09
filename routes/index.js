@@ -266,7 +266,7 @@ router.get('/delete/data', function(req, res, next) {
     if (!req.query.name) {
         return res.send(404, {'error':'missing name'});
     }
-    var plistName = req.body.name;
+    var plistName = req.query.name;
     Data.find({title: plistName, groupId:'public'}, function(err, foundData) {
         if (err) {
             return res.send(500,{'error':err.message});
