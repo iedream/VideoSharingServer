@@ -262,4 +262,85 @@ router.get('/get/data', function(req, res, next) {
 });
 
 
+router.post('/delete/data', function(req, res, next) {
+    if (!req.query.name) {
+        return res.send(404, {'error':'missing name'});
+    }
+    var plistName = req.body.name;
+    Data.find({title: plistName, groupId:'public'}, function(err, foundData) {
+        if (err) {
+            return res.send(500,{'error':err.message});
+        }
+        if (foundData.length === 0) {
+            var message = 'no data found for: ' + plistName;
+            return res.send(404, {'error': message});
+        }
+        foundData[0].remove(function(error) {
+            if(error) {
+                return res.send(500, {'error': error.message});
+            }
+            var message = plistName + 'is successfully deleted';
+            res.send(200, {'data':message});
+        })
+    })
+});
+
+router.delete('/group/delete/data', function(req, res, next) {
+    if (!req.body.name) {
+        return res.send(404, {'error':'missing name'});
+    }
+    if(!req.body.groupId) {
+        return res.send(404, {'error':'missing group id'});
+    }
+    if(!req.body.password) {
+        return res.send(404, {'error':'missing password'});
+    }
+    var plistName = req.body.name;
+    var groupId = req.body.groupId;
+    var password = req.body.password;
+
+    async.waterfall([
+        function(cb) {
+            Group.find({groupId:groupId}, function(err, group) {
+                if(err) {
+                    return cb({message: err.message, code: 500});
+                }
+                if(group.length === 0) {
+                    return cb({message: 'group doesn\'t exist', code:404});
+                }
+                if(!bcrypt.compareSync(password, group[0].password)) {
+                    return cb({message: 'Wrong Password', code: 401});
+                }
+                cb();
+            })
+        },
+        function(cb) {
+            Data.find({title: plistName, groupId: groupId}, function(err, foundData) {
+                if(err) {
+                    return cb({message: err.message, code: 500});
+                }
+                if(foundData.length === 0) {
+                    var message = 'no data found for: ' + plistName +' in ' + groupId;
+                    return cb({message: message, code: 401});
+                }
+                cb(null, foundData[0]);
+            })
+        },
+        function(cb, data) {
+            data.remove(function(err) {
+                if (err) {
+                    return cb(err);
+                }
+                var message = plistName + ' in ' + groupId + ' is successfully deleted';
+                cb(null, {'data':message});
+            })
+        }
+    ], function(err, message) {
+        if(err) {
+            return res.send(err.code, {'error':err.message});
+        }
+        res.send(200, message)
+    })
+})
+
 module.exports = router;
