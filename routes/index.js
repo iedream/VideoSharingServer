@@ -262,11 +262,11 @@ router.get('/get/data', function(req, res, next) {
 });
 
 
-router.get('/delete/data', function(req, res, next) {
-    if (!req.query.name) {
+router.delete('/delete/data', function(req, res, next) {
+    if (!req.body.name) {
         return res.send(404, {'error':'missing name'});
     }
-    var plistName = req.query.name;
+    var plistName = req.body.name;
     Data.find({title: plistName, groupId:'public'}, function(err, foundData) {
         if (err) {
             return res.send(500,{'error':err.message});
@@ -285,19 +285,19 @@ router.get('/delete/data', function(req, res, next) {
     })
 });
 
-router.delete('/group/delete/data', function(req, res, next) {
-    if (!req.body.name) {
+router.get('/group/delete/data', function(req, res, next) {
+    if (!req.query.name) {
         return res.send(404, {'error':'missing name'});
     }
-    if(!req.body.groupId) {
+    if(!req.query.groupId) {
         return res.send(404, {'error':'missing group id'});
     }
-    if(!req.body.password) {
+    if(!req.query.password) {
         return res.send(404, {'error':'missing password'});
     }
-    var plistName = req.body.name;
-    var groupId = req.body.groupId;
-    var password = req.body.password;
+    var plistName = req.query.name;
+    var groupId = req.query.groupId;
+    var password = req.query.password;
 
     async.waterfall([
         function(cb) {
