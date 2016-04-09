@@ -262,7 +262,7 @@ router.get('/get/data', function(req, res, next) {
 });
 
 
-router.post('/delete/data', function(req, res, next) {
+router.get('/delete/data', function(req, res, next) {
     if (!req.query.name) {
         return res.send(404, {'error':'missing name'});
     }
