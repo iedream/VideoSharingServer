@@ -279,7 +279,7 @@ router.get('/delete/data', function(req, res, next) {
             if(error) {
                 return res.send(500, {'error': error.message});
             }
-            var message = plistName + 'is successfully deleted';
+            var message = plistName + ' is successfully deleted';
             res.send(200, {'data':message});
         })
     })
