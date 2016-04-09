@@ -326,7 +326,7 @@ router.get('/group/delete/data', function(req, res, next) {
                 cb(null, foundData[0]);
             })
         },
-        function(cb, data) {
+        function(data, cb) {
             data.remove(function(err) {
                 if (err) {
                     return cb(err);
