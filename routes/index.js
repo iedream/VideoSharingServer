@@ -285,19 +285,19 @@ router.delete('/delete/data', function(req, res, next) {
     })
 });
 
-router.get('/group/delete/data', function(req, res, next) {
-    if (!req.query.name) {
+router.delete('/group/delete/data', function(req, res, next) {
+    if (!req.body.name) {
         return res.send(404, {'error':'missing name'});
     }
-    if(!req.query.groupId) {
+    if(!req.body.groupId) {
         return res.send(404, {'error':'missing group id'});
     }
-    if(!req.query.password) {
+    if(!req.body.password) {
         return res.send(404, {'error':'missing password'});
     }
-    var plistName = req.query.name;
-    var groupId = req.query.groupId;
-    var password = req.query.password;
+    var plistName = req.body.name;
+    var groupId = req.body.groupId;
+    var password = req.body.password;
 
     async.waterfall([
         function(cb) {
