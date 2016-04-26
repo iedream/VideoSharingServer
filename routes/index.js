@@ -20,7 +20,7 @@ var groupSchema = new mongoose.Schema({
 });
 var Group = mongoose.model('Group', groupSchema);
 
-router.post('/create/group', function(req, res, next) {
+router.post('/create/group', function(req, res) {
     if (!req.body.groupId) {
         return res.send(404, {'error': 'missing group id'});
     }
@@ -62,22 +62,22 @@ router.post('/create/group', function(req, res, next) {
     })
 });
 
-router.post('/group/:id/data', function(req, res, next) {
-    if(!req.body.name) {
+router.post('/group/:groupId/data/:name', function(req, res) {
+    if(!req.params.name) {
         return res.send(404, {'error':'missing name'});
     }
     if(!req.body.data) {
         return res.send(404, {'error':'missing data'});
     }
-    if(!req.params.id) {
+    if(!req.params.groupId) {
         return res.send(404, {'error':'missing group id'});
     }
     if(!req.body.password) {
         return res.send(404, {'error':'missing password'});
     }
-    var groupId = req.params.id;
+    var groupId = req.params.groupId;
     var password = req.body.password;
-    var plistName = req.body.name;
+    var plistName = req.params.name;
     var plistData = req.body.data;
     var newPlaylist = false;
 
@@ -137,15 +137,15 @@ router.post('/group/:id/data', function(req, res, next) {
 });
 
 
-router.post('/data', function(req, res, next) {
-    if(!req.body.name) {
+router.post('/data/:name', function(req, res) {
+    if(!req.params.name) {
         return res.send(404, {'error':'missing name'});
     }
     if(!req.body.data) {
         return res.send(404, {'error':'missing data'});
     }
     var plistData = req.body.data;
-    var plistName = req.body.name;
+    var plistName = req.params.name;
     var newPlaylist = false;
 
     async.waterfall([
@@ -190,18 +190,18 @@ router.post('/data', function(req, res, next) {
     });
 });
 
-router.get('/group/:id/data', function(req, res, next) {
-    if (!req.query.name) {
+router.get('/group/:groupId/data/:name', function(req, res) {
+    if (!req.params.name) {
         return res.send(404, {'error':'missing name'});
     }
-    if (!req.params.id) {
+    if (!req.params.groupId) {
         return res.send(404, {'error':'missing group id'});
     }
     if (!req.query.password) {
         return res.send(404, {'error':'missing password'});
     }
-    var plistName = req.query.name;
-    var groupId = req.params.id;
+    var plistName = req.params.name;
+    var groupId = req.params.groupId;
     var password = req.query.password;
 
     async.waterfall([
@@ -239,11 +239,11 @@ router.get('/group/:id/data', function(req, res, next) {
     })
 });
 
-router.get('/data', function(req, res, next) {
-    if (!req.query.name) {
+router.get('/data/:name', function(req, res) {
+    if (!req.params.name) {
         return res.send(404, {'error':'missing name'});
     }
-    var plistName = req.query.name;
+    var plistName = req.params.name;
     Data.find({title: plistName, groupId: "public"}, function(err, foundData) {
         if(err) {
             return res.send(500,{'error': err.message});
@@ -257,11 +257,11 @@ router.get('/data', function(req, res, next) {
 });
 
 
-router.delete('/data', function(req, res, next) {
-    if (!req.body.name) {
+router.delete('/data/:name', function(req, res) {
+    if (!req.params.name) {
         return res.send(404, {'error':'missing name'});
     }
-    var plistName = req.body.name;
+    var plistName = req.params.name;
     Data.find({title: plistName, groupId:'public'}, function(err, foundData) {
         if (err) {
             return res.send(500,{'error':err.message});
@@ -280,18 +280,18 @@ router.delete('/data', function(req, res, next) {
     })
 });
 
-router.delete('/group/:id/data', function(req, res, next) {
-    if (!req.body.name) {
+router.delete('/group/:groupId/data/:name', function(req, res) {
+    if (!req.params.name) {
         return res.send(404, {'error':'missing name'});
     }
-    if(!req.params.id) {
+    if(!req.params.groupId) {
         return res.send(404, {'error':'missing group id'});
     }
     if(!req.body.password) {
         return res.send(404, {'error':'missing password'});
     }
-    var plistName = req.body.name;
-    var groupId = req.params.id;
+    var plistName = req.params.name;
+    var groupId = req.params.groupId;
     var password = req.body.password;
 
     async.waterfall([
