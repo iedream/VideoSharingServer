@@ -74,13 +74,13 @@ router.post('/group/:id/data', function(req, res, next) {
     if(!req.body.data) {
         return res.send(404, {'error':'missing data'});
     }
-    if(!req.params.groupId) {
+    if(!req.params.id) {
         return res.send(404, {'error':'missing group id'});
     }
     if(!req.body.password) {
         return res.send(404, {'error':'missing password'});
     }
-    var groupId = req.params.groupId;
+    var groupId = req.params.id;
     var password = req.body.password;
     var plistName = req.body.name;
     var plistData = req.body.data;
@@ -199,14 +199,14 @@ router.get('/group/:id/data', function(req, res, next) {
     if (!req.query.name) {
         return res.send(404, {'error':'missing name'});
     }
-    if (!req.params.groupId) {
+    if (!req.params.id) {
         return res.send(404, {'error':'missing group id'});
     }
     if (!req.query.password) {
         return res.send(404, {'error':'missing password'});
     }
     var plistName = req.query.name;
-    var groupId = req.params.groupId;
+    var groupId = req.params.id;
     var password = req.query.password;
 
     async.waterfall([
@@ -289,14 +289,14 @@ router.delete('/group/:id/data', function(req, res, next) {
     if (!req.body.name) {
         return res.send(404, {'error':'missing name'});
     }
-    if(!req.params.groupId) {
+    if(!req.params.id) {
         return res.send(404, {'error':'missing group id'});
     }
     if(!req.body.password) {
         return res.send(404, {'error':'missing password'});
     }
     var plistName = req.body.name;
-    var groupId = req.params.groupId;
+    var groupId = req.params.id;
     var password = req.body.password;
 
     async.waterfall([
