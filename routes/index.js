@@ -20,7 +20,7 @@ var groupSchema = new mongoose.Schema({
 });
 var Group = mongoose.model('Group', groupSchema);
 
-router.post('/create/group', function(req, res) {
+router.post('/group', function(req, res) {
     if (!req.body.groupId) {
         return res.send(404, {'error': 'missing group id'});
     }
