@@ -22,10 +22,10 @@ var Group = mongoose.model('Group', groupSchema);
 
 router.post('/group', function(req, res) {
     if (!req.body.groupId) {
-        return res.send(404, {'error': 'missing group id'});
+        return res.send(422, {'error': 'missing group id'});
     }
     if (!req.body.password) {
-        return res.send(404, {'error': 'missing password'});
+        return res.send(422, {'error': 'missing password'});
     }
     var groupId = req.body.groupId;
     var password = bcrypt.hashSync(req.body.password, salt);
@@ -37,7 +37,7 @@ router.post('/group', function(req, res) {
                     return cb({message: err.message, code: 500});
                 }
                 if(foundData.length !== 0) {
-                    return cb({message: 'group already exist', code: 400})
+                    return cb({message: 'group already exist', code: 422})
                 }
                 cb();
             })
@@ -64,16 +64,16 @@ router.post('/group', function(req, res) {
 
 router.post('/group/:groupId/data/:name', function(req, res) {
     if(!req.params.name) {
-        return res.send(404, {'error':'missing name'});
+        return res.send(422, {'error':'missing name'});
     }
     if(!req.body.data) {
-        return res.send(404, {'error':'missing data'});
+        return res.send(422, {'error':'missing data'});
     }
     if(!req.params.groupId) {
-        return res.send(404, {'error':'missing group id'});
+        return res.send(422, {'error':'missing group id'});
     }
     if(!req.body.password) {
-        return res.send(404, {'error':'missing password'});
+        return res.send(422, {'error':'missing password'});
     }
     var groupId = req.params.groupId;
     var password = req.body.password;
@@ -88,7 +88,7 @@ router.post('/group/:groupId/data/:name', function(req, res) {
                     return cb({message: err.message, code: 500});
                 }
                 if(group.length === 0) {
-                    return cb({message: 'group doesn\'t exist', code:404});
+                    return cb({message: 'group doesn\'t exist', code:401});
                 }
                 if(!bcrypt.compareSync(password, group[0].password)) {
                     return cb({message: 'Wrong Password', code: 401});
@@ -139,10 +139,10 @@ router.post('/group/:groupId/data/:name', function(req, res) {
 
 router.post('/data/:name', function(req, res) {
     if(!req.params.name) {
-        return res.send(404, {'error':'missing name'});
+        return res.send(422, {'error':'missing name'});
     }
     if(!req.body.data) {
-        return res.send(404, {'error':'missing data'});
+        return res.send(422, {'error':'missing data'});
     }
     var plistData = req.body.data;
     var plistName = req.params.name;
@@ -192,13 +192,13 @@ router.post('/data/:name', function(req, res) {
 
 router.get('/group/:groupId/data/:name', function(req, res) {
     if (!req.params.name) {
-        return res.send(404, {'error':'missing name'});
+        return res.send(422, {'error':'missing name'});
     }
     if (!req.params.groupId) {
-        return res.send(404, {'error':'missing group id'});
+        return res.send(422, {'error':'missing group id'});
     }
     if (!req.query.password) {
-        return res.send(404, {'error':'missing password'});
+        return res.send(422, {'error':'missing password'});
     }
     var plistName = req.params.name;
     var groupId = req.params.groupId;
@@ -211,7 +211,7 @@ router.get('/group/:groupId/data/:name', function(req, res) {
                     return cb({message: err.message, code: 500});
                 }
                 if(group.length === 0) {
-                    return cb({message: 'group doesn\'t exist', code:404});
+                    return cb({message: 'group doesn\'t exist', code:401});
                 }
                 if(!bcrypt.compareSync(password, group[0].password)) {
                     return cb({message: 'Wrong Password', code: 401});
@@ -226,7 +226,7 @@ router.get('/group/:groupId/data/:name', function(req, res) {
                 }
                 if(foundData.length === 0) {
                     var message = 'no data found for: ' + plistName +' in ' + groupId;
-                    return cb({message: message, code: 401});
+                    return cb({message: message, code: 422});
                 }
                 cb(null, foundData[0]);
             })
@@ -241,7 +241,7 @@ router.get('/group/:groupId/data/:name', function(req, res) {
 
 router.get('/data/:name', function(req, res) {
     if (!req.params.name) {
-        return res.send(404, {'error':'missing name'});
+        return res.send(422, {'error':'missing name'});
     }
     var plistName = req.params.name;
     Data.find({title: plistName, groupId: "public"}, function(err, foundData) {
@@ -250,7 +250,7 @@ router.get('/data/:name', function(req, res) {
         }
         if(foundData.length === 0) {
             var message = 'no data found for: ' + plistName;
-            return res.send(404, {'error': message});
+            return res.send(422, {'error': message});
         }
         res.send(200, foundData[0]);
     })
@@ -259,7 +259,7 @@ router.get('/data/:name', function(req, res) {
 
 router.delete('/data/:name', function(req, res) {
     if (!req.params.name) {
-        return res.send(404, {'error':'missing name'});
+        return res.send(422, {'error':'missing name'});
     }
     var plistName = req.params.name;
     Data.find({title: plistName, groupId:'public'}, function(err, foundData) {
@@ -268,7 +268,7 @@ router.delete('/data/:name', function(req, res) {
         }
         if (foundData.length === 0) {
             var message = 'no data found for: ' + plistName;
-            return res.send(404, {'error': message});
+            return res.send(422, {'error': message});
         }
         foundData[0].remove(function(error) {
             if(error) {
@@ -282,13 +282,13 @@ router.delete('/data/:name', function(req, res) {
 
 router.delete('/group/:groupId/data/:name', function(req, res) {
     if (!req.params.name) {
-        return res.send(404, {'error':'missing name'});
+        return res.send(422, {'error':'missing name'});
     }
     if(!req.params.groupId) {
-        return res.send(404, {'error':'missing group id'});
+        return res.send(422, {'error':'missing group id'});
     }
     if(!req.body.password) {
-        return res.send(404, {'error':'missing password'});
+        return res.send(422, {'error':'missing password'});
     }
     var plistName = req.params.name;
     var groupId = req.params.groupId;
@@ -301,7 +301,7 @@ router.delete('/group/:groupId/data/:name', function(req, res) {
                     return cb({message: err.message, code: 500});
                 }
                 if(group.length === 0) {
-                    return cb({message: 'group doesn\'t exist', code:404});
+                    return cb({message: 'group doesn\'t exist', code:422});
                 }
                 if(!bcrypt.compareSync(password, group[0].password)) {
                     return cb({message: 'Wrong Password', code: 401});
@@ -316,7 +316,7 @@ router.delete('/group/:groupId/data/:name', function(req, res) {
                 }
                 if(foundData.length === 0) {
                     var message = 'no data found for: ' + plistName +' in ' + groupId;
-                    return cb({message: message, code: 401});
+                    return cb({message: message, code: 422});
                 }
                 cb(null, foundData[0]);
             })
